@@ -1,43 +1,56 @@
-import React, { useState, useEffect } from 'react';
-import { Navbar } from './components/Navbar';
-import { Hero } from './components/Hero';
-import { AttractionsGrid } from './components/AttractionsGrid';
-import { AttractionModal } from './components/AttractionModal';
-import { HotelsSection } from './components/HotelsSection';
-import { DiningSection } from './components/DiningSection';
-import { TransportSection } from './components/TransportSection';
-import { AIPlanner } from './components/AIPlanner';
-import { InteractiveMap } from './components/InteractiveMap';
-import { BusinessDashboard } from './components/BusinessDashboard';
-import { BookingCartDrawer } from './components/BookingCartDrawer';
-import { AuthModal } from './components/AuthModal';
-import { Footer } from './components/Footer';
+import { useState } from "react";
 
-import { ATTRACTIONS_DATA } from './data/kznData';
-import { Attraction, BookingItem, Language, UserAccount } from './types';
-import { STORAGE_KEYS } from './lib/firebaseConfig';
-import { CheckCircle, Sparkles } from 'lucide-react';
+type Place = {
+  id: string;
+  name: string;
+  region: string;
+  tag: string;
+  desc: string;
+};
+
+const PLACES: Place[] = [
+  { id: "durban", name: "Durban Golden Mile", region: "Coast", tag: "Beach & City", desc: "Wide beaches, promenade walks, surf spots and morning markets along the Indian Ocean." },
+  { id: "drakensberg", name: "Drakensberg Mountains", region: "Berg", tag: "Hiking", desc: "Basalt cliffs, san rock art, and day hikes from Royal Natal to Giant's Castle." },
+  { id: "isimangaliso", name: "iSimangaliso Wetland Park", region: "Elephant Coast", tag: "UNESCO", desc: "Lakes, dunes, coral reefs and turtle nesting in one continuous park." },
+  { id: "hluhluwe", name: "Hluhluwe-iMfolozi Park", region: "Zululand", tag: "Safari", desc: "Africa's oldest reserve, known for rhino conservation and open savanna drives." },
+  { id: "midlands", name: "Midlands Meander", region: "Midlands", tag: "Culture", desc: "Farm stalls, art studios, craft breweries and misty rolling hills." },
+  { id: "kosi", name: "Kosi Bay", region: "Far North", tag: "Remote", desc: "Clear estuary channels, raffia forests and traditional fish traps." },
+];
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState<string>('explore');
-  const [language, setLanguage] = useState<Language>('en');
-  const [currency, setCurrency] = useState<'ZAR' | 'USD'>('ZAR');
+  const [filter, setFilter] = useState("All");
+  const regions = ["All", ...Array.from(new Set(PLACES.map(p => p.region)))];
+  const filtered = filter === "All" ? PLACES : PLACES.filter(p => p.region === filter);
 
-  const [searchQuery, setSearchQuery] = useState<string>('');
-  const [selectedRegion, setSelectedRegion] = useState<string>('All');
-  const [selectedCategory, setSelectedCategory] = useState<string>('All');
+  return (
+    <div className="min-h-screen bg-[#fbf8f3] text-zinc-900">
+      <header className="max-w-5xl mx-auto px-6 pt-12 pb-8">
+        <div className="inline-flex items-center gap-2 text-[11px] tracking-[0.2em] uppercase border border-zinc-900 rounded-full px-3 py-1">Visit KZN • No Prices</div>
+        <h1 className="mt-6 text-5xl md:text-7xl font-black tracking-tight leading-[0.9]">KwaZulu-Natal,<br/>unhurried.</h1>
+        <p className="mt-4 max-w-xl text-zinc-600 leading-relaxed">A price-free guide. Just places, why to go, and how to shape a slow itinerary. No bookings, no rates.</p>
+        <div className="mt-6 flex flex-wrap gap-2">
+          {regions.map(r => (
+            <button key={r} onClick={() => setFilter(r)} className={`rounded-full px-4 py-2 text-sm border transition ${filter===r?"bg-zinc-900 text-white border-zinc-900":"bg-white border-zinc-200 hover:border-zinc-900"}`}>{r}</button>
+          ))}
+        </div>
+      </header>
+      <main className="max-w-5xl mx-auto px-6 pb-16 grid md:grid-cols-2 gap-4">
+        {filtered.map(p => (
+          <div key={p.id} className="bg-white border border-zinc-200 rounded-[20px] p-6">
+            <div className="flex justify-between items-start gap-4">
+              <h2 className="text-xl font-bold leading-tight">{p.name}</h2>
+              <span className="shrink-0 text-[10px] uppercase tracking-widest bg-zinc-900 text-white rounded-full px-2.5 py-1">{p.tag}</span>
+            </div>
+            <div className="mt-2 text-xs tracking-widest uppercase text-zinc-500">{p.region}</div>
+            <p className="mt-3 text-[15px] leading-relaxed text-zinc-600">{p.desc}</p>
+          </div>
+        ))}
+      </main>
+      <footer className="max-w-5xl mx-auto px-6 pb-12 text-xs text-zinc-400">No prices • No booking • Just ideas for KZN</footer>
+    </div>
+  );
+}
 
-  const [selectedAttraction, setSelectedAttraction] = useState<Attraction | null>(null);
-  const [isCartOpen, setIsCartOpen] = useState<boolean>(false);
-  const [isAuthModalOpen, setIsAuthModalOpen] = useState<boolean>(false);
-
-  // Cart & Favorites state with localStorage persistence
-  const [cartItems, setCartItems] = useState<BookingItem[]>(() => {
-    try {
-      const saved = localStorage.getItem(STORAGE_KEYS.BOOKINGS);
-      return saved ? JSON.parse(saved) : [];
-    } catch {
-      return [];
     }
   });
 
