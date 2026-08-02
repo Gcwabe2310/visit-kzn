@@ -1,4 +1,3 @@
-
 import { PLACES } from "./src/data/places";
 
 const CONTACT = "0815890376";
@@ -28,4 +27,3 @@ export default function AttractionsGrid() {
     </section>
   );
 }
-U
