@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+(import React, { useState } from 'react';
 import { Attraction, Language } from '../types';
 import { Star, MapPin, Heart, ArrowRight, Eye, Sparkles } from 'lucide-react';
 import { TRANSLATIONS } from '../lib/i18n';
