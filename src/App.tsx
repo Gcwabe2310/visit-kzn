@@ -1,4 +1,4 @@
-) 
+
 import { useState } from "react";
 
 type Place = {
@@ -87,6 +87,8 @@ export default function App() {
       </footer>
     </div>
   );
+}
+
 }
 
 }
