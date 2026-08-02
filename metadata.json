@@ -1,0 +1,6 @@
+{
+  "name": "Visit KZN",
+  "description": "Discover KwaZulu-Natal tourism: Big 5 safaris, Drakensberg mountains, Durban beaches, Zulu culture, AI itinerary planning, hotel & transport booking, business dashboard, and multilingual support.",
+  "requestFramePermissions": ["geolocation"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
