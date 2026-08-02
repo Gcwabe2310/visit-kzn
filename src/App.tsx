@@ -1,90 +1,31 @@
-
 import { useState } from "react";
-
-type Place = {
-  id: string;
-  name: string;
-  region: string;
-  tag: string;
-  desc: string;
-};
-
+const CONTACT = "0815890376";
+const WA = "https://wa.me/27815890376";
+const TEL = "tel:+27815890376";
+type Place = { id: string; name: string; region: string; tag: string; desc: string; image: string; highlights: string[]; };
 const PLACES: Place[] = [
-  { id: "durban", name: "Durban Golden Mile", region: "Coast", tag: "Beach & City", desc: "Wide beaches, promenade walks, surf spots and morning markets along the Indian Ocean." },
-  { id: "drakensberg", name: "Drakensberg Mountains", region: "Berg", tag: "Hiking", desc: "Basalt cliffs, San rock art, and day hikes from Royal Natal to Giant's Castle." },
-  { id: "isimangaliso", name: "iSimangaliso Wetland Park", region: "Elephant Coast", tag: "UNESCO", desc: "Lakes, dunes, coral reefs and turtle nesting in one continuous park." },
-  { id: "hluhluwe", name: "Hluhluwe-iMfolozi Park", region: "Zululand", tag: "Safari", desc: "Africa's oldest reserve, known for rhino conservation and open savanna drives." },
-  { id: "midlands", name: "Midlands Meander", region: "Midlands", tag: "Culture", desc: "Farm stalls, art studios, craft breweries and misty rolling hills." },
-  { id: "kosi", name: "Kosi Bay", region: "Far North", tag: "Remote", desc: "Clear estuary channels, raffia forests and traditional fish traps." },
-  { id: "durban-central", name: "Durban Central Stay", region: "Coast", tag: "Stay", desc: "Central, safe, walking distance to beach. Host-managed, no middleman." },
-  { id: "umhlanga", name: "Umhlanga Ridge", region: "Coast", tag: "Stay", desc: "Modern apartments, pools, close to malls. Direct host contact." },
-  { id: "st-lucia", name: "St Lucia Estuary", region: "Elephant Coast", tag: "Stay & Tour", desc: "Hippo & croc tours, Isimangaliso gates 5 mins away." },
+  { id:"b1", name:"Durban Harbour Boat Cruise", region:"Durban Boats & Cruises", tag:"Most Booked", desc:"45min harbour cruise past Wilson's Wharf, ships, mangroves. Sunset available.", image:"https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800", highlights:["Sunset & Day","Family","Direct host"] },
+  { id:"b2", name:"Deep Sea Fishing Charter", region:"Durban Boats & Cruises", tag:"Boats", desc:"Half-day off Durban coast. Rods, bait, skipper included.", image:"https://images.unsplash.com/photo-1516483638261-f4dbaf036963?w=800", highlights:["5am launch","Max 8","Catch & grill"] },
+  { id:"b3", name:"Luxury Yacht Sunset Cruise", region:"Durban Boats & Cruises", tag:"Luxury", desc:"Private yacht 2-12 pax, champagne sunset, dolphins.", image:"https://images.unsplash.com/photo-1540946485063-a40da2751e9e?w=800", highlights:["Private","Drinks","Photographer"] },
+  { id:"b4", name:"uShaka Marine World", region:"Durban Coast", tag:"Family", desc:"Africa's largest aquarium, water slides, dolphin show.", image:"https://images.unsplash.com/photo-1516483638261-f4dbaf036963?w=800", highlights:["Aquarium","Water park","Tickets via us"] },
+  { id:"b5", name:"Moses Mabhida SkyCar", region:"Durban Coast", tag:"Adventure", desc:"SkyCar up the arch, 360 views, big swing.", image:"https://images.unsplash.com/photo-1577941250364-8f7dbb9a3a5c?w=800", highlights:["City views","Stadium tour","Swing"] },
+  { id:"b6", name:"Drakensberg Horse & Hike", region:"Drakensberg", tag:"Berg", desc:"Champagne Valley hikes, horse trails, waterfalls.", image:"https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800", highlights:["Hikes","Horse","Lodges"] },
+  { id:"b7", name:"Hluhluwe-iMfolozi Safari", region:"Elephant Coast", tag:"Big 5", desc:"Oldest game park, Big 5 open vehicle safaris.", image:"https://images.unsplash.com/photo-1523805009345-7448845a9e53?w=800", highlights:["Big 5","Ranger","Direct lodge"] },
+  { id:"b8", name:"St Lucia Hippo & Croc Cruise", region:"Elephant Coast", tag:"Boats", desc:"2hr cruise on iSimangaliso Wetland Park.", image:"https://images.unsplash.com/photo-1530549387789-4c1017266635?w=800", highlights:["Hippos","Birding","UNESCO"] },
+  { id:"b9", name:"Oribi Gorge Wild Swing", region:"South Coast", tag:"Adrenaline", desc:"World's highest gorge swing, zipline.", image:"https://images.unsplash.com/photo-1501554728187-ce583db33af7?w=800", highlights:["Swing","Zipline","Photos"] },
+  { id:"b10", name:"Midlands Meander", region:"Midlands", tag:"Culture", desc:"Craft breweries, chocolate, pottery, farm stays.", image:"https://images.unsplash.com/photo-1441974231531-c6227db76b6?w=800", highlights:["Craft","Food","Farm stay"] },
+  { id:"b11", name:"Battlefields Tour", region:"Battlefields", tag:"Heritage", desc:"Isandlwana, Rorke's Drift with Zulu guide.", image:"https://images.unsplash.com/photo-1516026672322-bc52d61a55e5?w=800", highlights:["Zulu guide","Full day","Transport"] },
+  { id:"b12", name:"Shakaland Zulu Village", region:"Zululand", tag:"Culture", desc:"Authentic Zulu experience, dancing, lunch.", image:"https://images.unsplash.com/photo-1489392191049-fc10c97e64b6?w=800", highlights:["Cultural","Lunch","Family"] },
 ];
-
-const CONTACT_NUMBER = "0815890376";
-const WHATSAPP_LINK = `https://wa.me/27815890376`;
-const TEL_LINK = `tel:+27815890376`;
-
-export default function App() {
-  const [filter, setFilter] = useState("All");
-  const regions = ["All", ...Array.from(new Set(PLACES.map(p => p.region)))];
-  const filtered = filter === "All" ? PLACES : PLACES.filter(p => p.region === filter);
-
+export default function App(){
+  const [active,setActive] = useState("All");
+  const regions = ["All","Durban Boats & Cruises","Durban Coast","Drakensberg","Elephant Coast","South Coast","Midlands"];
+  const filtered = active==="All" ? PLACES : PLACES.filter(p=>p.region===active);
   return (
-    <div className="min-h-screen bg-[#fbf8f3] text-zinc-900">
-      <header className="max-w-6xl mx-auto px-6 pt-10 pb-6">
-        <div className="flex flex-wrap justify-between items-start gap-4">
-          <div>
-            <div className="inline-flex items-center gap-2 text-[11px] tracking-[0.2em] uppercase border border-zinc-900 rounded-full px-3 py-1">Visit KZN • Direct Host • No Prices Online</div>
-            <h1 className="mt-6 text-5xl md:text-7xl font-black tracking-tight leading-[0.9]">KwaZulu-Natal,<br/>unhurried.</h1>
-            <p className="mt-4 max-w-xl text-zinc-600 leading-relaxed">A price-free guide. No booking fees. You deal direct with host on WhatsApp or Call. Ask for photos, dates, best rate.</p>
-          </div>
-          <div className="bg-zinc-900 text-white rounded-2xl px-5 py-4 text-sm">
-            <div className="text-[11px] uppercase tracking-widest opacity-60">Contact EL SAR 031</div>
-            <div className="mt-1 font-bold text-lg">{CONTACT_NUMBER}</div>
-            <div className="mt-3 flex gap-2">
-              <a href={TEL_LINK} className="bg-white text-zinc-900 rounded-full px-4 py-2 font-bold text-xs">Call Now</a>
-              <a href={WHATSAPP_LINK} target="_blank" className="bg-green-500 text-white rounded-full px-4 py-2 font-bold text-xs">WhatsApp</a>
-            </div>
-          </div>
-        </div>
-        <div className="mt-8 flex flex-wrap gap-2">
-          {regions.map(r => (
-            <button key={r} onClick={() => setFilter(r)} className={`rounded-full px-4 py-2 text-sm border transition ${filter===r?"bg-zinc-900 text-white border-zinc-900":"bg-white border-zinc-200 hover:border-zinc-900"}`}>{r}</button>
-          ))}
-        </div>
-      </header>
-
-      <main className="max-w-6xl mx-auto px-6 pb-16 grid md:grid-cols-3 gap-4">
-        {filtered.map(p => (
-          <div key={p.id} className="bg-white border border-zinc-200 rounded-[24px] p-6 flex flex-col">
-            <div className="flex justify-between items-start gap-4">
-              <h2 className="text-[18px] font-bold leading-tight">{p.name}</h2>
-              <span className="shrink-0 text-[10px] uppercase tracking-widest bg-zinc-900 text-white rounded-full px-2.5 py-1">{p.tag}</span>
-            </div>
-            <div className="mt-2 text-xs tracking-widest uppercase text-zinc-500">{p.region}</div>
-            <p className="mt-3 text-[14px] leading-relaxed text-zinc-600 flex-1">{p.desc}</p>
-            <div className="mt-5 border-t border-zinc-100 pt-4">
-              <div className="text-[11px] uppercase tracking-widest text-zinc-400">Enquire Direct • {CONTACT_NUMBER}</div>
-              <div className="mt-2 grid grid-cols-2 gap-2">
-                <a href={TEL_LINK} className="text-center rounded-full bg-zinc-900 text-white py-2.5 text-sm font-bold">Call</a>
-                <a href={`${WHATSAPP_LINK}?text=Hi, I'm interested in ${encodeURIComponent(p.name)} - ${p.region}. Is it available?`} target="_blank" className="text-center rounded-full bg-green-500 text-white py-2.5 text-sm font-bold">WhatsApp</a>
-              </div>
-            </div>
-          </div>
-        ))}
-      </main>
-
-      <footer className="max-w-6xl mx-auto px-6 pb-12">
-        <div className="bg-white border border-zinc-200 rounded-[20px] p-6 flex flex-wrap justify-between gap-4 items-center">
-          <div className="text-sm"><b>EL SAR 031</b> • Umlazi, KZN • {CONTACT_NUMBER} • No prices online - we quote on WhatsApp</div>
-          <div className="flex gap-2">
-            <a href={TEL_LINK} className="rounded-full border border-zinc-900 px-4 py-2 text-sm font-bold">Call {CONTACT_NUMBER}</a>
-            <a href={WHATSAPP_LINK} className="rounded-full bg-zinc-900 text-white px-4 py-2 text-sm font-bold">WhatsApp Us</a>
-          </div>
-        </div>
-        <div className="mt-4 text-xs text-zinc-400 text-center">No prices • No middleman • Direct host contact only</div>
-      </footer>
-    </div>
-  );
+    <div className="min-h-screen bg-[#faf6f0] text-zinc-900">
+      <header className="sticky top-0 z-50 bg-[#faf6f0]/80 backdrop-blur border-b border-zinc-200"><div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between"><div className="flex items-center gap-3"><div className="w-9 h-9 bg-black text-white rounded-full grid place-items-center font-black text-xs">KZN</div><div className="font-black leading-none">VISIT KZN<div className="text-[10px] tracking-widest font-normal text-zinc-500">BY EL SAR 031</div></div></div><a href={TEL} className="bg-black text-white rounded-full px-5 h-10 grid place-items-center text-sm font-bold">Call {CONTACT}</a></div></header>
+      <section className="max-w-7xl mx-auto px-6 pt-10 pb-6 grid lg:grid-cols-[1.2fr_0.8fr] gap-8 items-end"><div><div className="inline-flex border border-zinc-900 rounded-full px-4 py-2 text-[11px] tracking-widest uppercase font-bold">No Prices Online • Direct Host • Best Rate on Call</div><h1 className="mt-6 text-[46px] md:text-[80px] font-black tracking-tighter leading-[0.85]">Durban<br/>Boats,<br/>Berg &<br/>Bush.</h1><p className="mt-6 max-w-[48ch] text-[18px] leading-[1.3] text-zinc-600">We don't list prices because they change with season, fuel, demand. Hotels, boats, charters - price goes up & down. Call your local agent <b className="text-zinc-900">El Sar {CONTACT}</b> for today's real rate. No booking fees. Pay hotel direct if you want.</p><div className="mt-6 flex flex-wrap gap-3"><a href={TEL} className="bg-black text-white rounded-full px-7 h-12 grid place-items-center font-bold">Call Now {CONTACT}</a><a href={`${WA}?text=Hi El Sar, I need KZN trip`} target="_blank" className="bg-white border border-zinc-900 rounded-full px-7 h-12 grid place-items-center font-bold">WhatsApp for Rates</a></div></div><div className="bg-black text-white rounded-[28px] p-7"><div className="text-[11px] tracking-widest uppercase opacity-60">Contact El Sar 031</div><div className="mt-3 text-3xl font-black">{CONTACT}</div><div className="mt-4 grid grid-cols-2 gap-3 text-sm"><div className="bg-white/10 rounded-2xl p-4"><div className="font-bold">Boats</div><div className="opacity-70 text-xs mt-1">Harbour, yacht, fishing</div></div><div className="bg-white/10 rounded-2xl p-4"><div className="font-bold">Stays</div><div className="opacity-70 text-xs mt-1">Hotels, lodges</div></div><div className="bg-white/10 rounded-2xl p-4"><div className="font-bold">Safari</div><div className="opacity-70 text-xs mt-1">Big 5, St Lucia</div></div><div className="bg-white/10 rounded-2xl p-4"><div className="font-bold">Berg</div><div className="opacity-70 text-xs mt-1">Hikes, horse</div></div></div></div></section>
+      <div className="max-w-7xl mx-auto px-6 py-4 flex gap-2 overflow-x-auto"><div className="flex gap-2">{regions.map(r=><button key={r} onClick={()=>setActive(r)} className={`whitespace-nowrap rounded-full px-5 h-10 text-sm font-bold border ${active===r?"bg-black text-white border-black":"bg-white border-zinc-200"}`}>{r}</button>)}</div></div>
+      <section className="max-w-7xl mx-auto px-6 pb-24"><div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">{filtered.map(p=><article key={p.id} className="bg-white rounded-[24px] overflow-hidden border border-zinc-200 flex flex-col"><div className="relative h-[220px]"><img src={p.image} alt={p.name} className="w-full h-full object-cover"/><div className="absolute top-3 left-3 flex gap-2"><span className="bg-white/90 rounded-full px-3 py-1 text-[11px] font-bold uppercase">{p.region}</span><span className="bg-black text-white rounded-full px-3 py-1 text-[11px] font-bold uppercase">{p.tag}</span></div></div><div className="p-5 flex flex-col flex-1"><h3 className="font-black text-[18px]">{p.name}</h3><p className="mt-2 text-sm text-zinc-600">{p.desc}</p><div className="mt-3 flex flex-wrap gap-1.5">{p.highlights.map(h=><span key={h} className="bg-[#faf6f0] border rounded-full px-2.5 py-1 text-[11px]">{h}</span>)}</div><div className="mt-auto pt-5 border-t mt-5"><div className="flex justify-between"><div><div className="text-[10px] uppercase text-zinc-500">Rate</div><div className="font-bold text-sm">Call for today's rate</div></div><div className="text-[11px] text-zinc-500">No online price</div></div><div className="mt-3 grid grid-cols-2 gap-2"><a href={TEL} className="bg-black text-white rounded-full h-10 grid place-items-center text-sm font-bold">Call {CONTACT}</a><a href={`${WA}?text=Price for ${encodeURIComponent(p.name)}`} target="_blank" className="bg-[#25D366] text-white rounded-full h-10 grid place-items-center text-sm font-bold">WhatsApp</a></div></div></div></article>)}</div><div className="mt-14 bg-white border rounded-[24px] p-8 text-center"><h2 className="text-2xl font-black">Why no prices?</h2><p className="mt-2 max-w-[60ch] mx-auto text-zinc-600">Hotels, boats change price daily. We check live with host and give honest best rate. Pay direct to host if you prefer. No commission added.</p><div className="mt-6 flex justify-center"><a href={TEL} className="bg-black text-white rounded-full px-8 h-12 grid place-items-center font-bold">Call El Sar {CONTACT}</a></div></div></section><footer className="border-t py-8 text-center text-xs text-zinc-500">© {new Date().getFullYear()} Visit KZN by EL SAR 031 • {CONTACT} • No booking fees</footer></div>
+  )
 }
